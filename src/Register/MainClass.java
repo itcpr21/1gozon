@@ -54,4 +54,26 @@ public class MainClass {
         }
     }
     
+    public void UpdateProduct(String id, String name, int quantity, double price){
+    
+    }
+    
+    public int UP(String id, String name, int quantity, double price){
+        int a = 0;
+        try{
+             Class.forName("com.mysql.jdbc.Driver");
+        Connection upcon = DriverManager.getConnection(connection.getCon());
+        PreparedStatement uppstmt = upcon.prepareStatement("UPDATE`tblproduct` SET `p_name`=?, "
+                + "`p_quantity`=?, `p_price`=? WHERE  `id`=?; ");
+         uppstmt.setString(1,name);
+         uppstmt.setInt(2, quantity);
+         uppstmt.setDouble(3, price);
+         uppstmt.setString(4,id);
+         a = uppstmt.executeUpdate();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return a;
 }
+    }
+    
