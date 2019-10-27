@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Register;
-import MyConnerctor.Connectors;
+import MyConnector.Connectors;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,8 +14,10 @@ import javax.swing.JOptionPane;
  * @author Asus
  */
 public class MainClass {
+    
     MainFrame MF = new MainFrame();
     private Connectors connection = new Connectors();
+   
     public int AP(String pn, int pq, double pp){
      
         int v = 0;
@@ -37,5 +39,19 @@ public class MainClass {
         return v;
     }
     
+    public void DP(String id){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+           Connection dpcon = DriverManager.getConnection(connection.getCon());
+           String dpquery ="Delete from tblproduct where id = ?";
+           PreparedStatement dppstmt = dpcon.prepareStatement(dpquery);
+           dppstmt.setString(1, id);
+           dppstmt.executeUpdate();
+           JOptionPane.showMessageDialog(MF, "Successfully Deleted","Successfull",JOptionPane.INFORMATION_MESSAGE);
+           
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }

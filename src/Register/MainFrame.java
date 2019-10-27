@@ -5,20 +5,30 @@
  */
 package Register;
 
+import MyConnector.Connectors;
+import com.mysql.jdbc.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Asus
  */
 public class MainFrame extends javax.swing.JFrame {
-
+ private Connectors connection = new Connectors();
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
+        load();
         
     }
 
@@ -41,7 +51,13 @@ public class MainFrame extends javax.swing.JFrame {
         txtpprice = new javax.swing.JFormattedTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        MainFrameTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        lblrecords = new javax.swing.JLabel();
 
         AddProductDialog.setMinimumSize(new java.awt.Dimension(350, 370));
 
@@ -135,34 +151,112 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("ADD");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        btnAdd.setText("ADD");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
+
+        btnDelete.setBackground(new java.awt.Color(255, 0, 0));
+        btnDelete.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        btnDelete.setText("DELETE");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        MainFrameTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Product Name", "Qunatity", "Price"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(MainFrameTable);
+        if (MainFrameTable.getColumnModel().getColumnCount() > 0) {
+            MainFrameTable.getColumnModel().getColumn(0).setResizable(false);
+            MainFrameTable.getColumnModel().getColumn(1).setResizable(false);
+            MainFrameTable.getColumnModel().getColumn(2).setResizable(false);
+            MainFrameTable.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Statistic of Records\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 12))); // NOI18N
+
+        jLabel5.setText("No. of Records:");
+
+        lblrecords.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        lblrecords.setForeground(new java.awt.Color(0, 204, 51));
+        lblrecords.setText("0");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblrecords, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblrecords))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(812, Short.MAX_VALUE))
+                .addGap(101, 101, 101)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDelete)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(487, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDelete)
+                    .addComponent(btnAdd))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
         
         
@@ -170,12 +264,13 @@ public class MainFrame extends javax.swing.JFrame {
         AddProductDialog.setLocationRelativeTo(null);
         this.setVisible(false);
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAddActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         
         AddProductDialog.setVisible(false);
-        
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -191,12 +286,40 @@ public class MainFrame extends javax.swing.JFrame {
         if (e ==1){
             JOptionPane.showMessageDialog(MF, "Data Successfully Save","Saved!", JOptionPane.INFORMATION_MESSAGE);
             cf();
+            MF.load();
+            
            
             
         }else{
             JOptionPane.showMessageDialog(MF, "Data Not Saved","Error",JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+
+        MainClass MCdp = new MainClass();
+        int selrow = MainFrameTable.getSelectedRow();
+    
+        if(selrow == -1){
+        JOptionPane.showMessageDialog(rootPane, "Please Select A Row to be deleted","Error",JOptionPane.WARNING_MESSAGE);
+    }else{
+        String name = MainFrameTable.getValueAt(selrow, 1).toString();
+         int v = JOptionPane.showConfirmDialog(rootPane, 
+            "Are you sure you want to delete this record? It cannot be recovered.",
+            "Confirmation",JOptionPane.OK_CANCEL_OPTION);
+        if(v == JOptionPane.OK_OPTION){
+          int x = JOptionPane.showConfirmDialog(rootPane, "The Product " +name+ " will be Deleted","Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+            if(x == JOptionPane.YES_OPTION){
+            String sid = MainFrameTable.getValueAt(selrow, 0).toString();
+            MCdp.DP(sid);
+                load();
+    }
+}
+    }
+        
+        
+        
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,15 +363,50 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AddProductDialog;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable MainFrameTable;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblrecords;
     private javax.swing.JTextField txtpname;
     private javax.swing.JFormattedTextField txtpprice;
     private javax.swing.JSpinner txtpquantity;
     // End of variables declaration//GEN-END:variables
+public void load(){
+    
+    int row = 0;
+    try{
+         Class.forName("com.mysql.jdbc.Driver");
+        java.sql.Connection con = DriverManager.getConnection(connection.getCon());
+         PreparedStatement PS = con.prepareStatement("Select * from tblproduct order by id desc;");
+         ResultSet RS = PS.executeQuery();
+         DefaultTableModel tbl = (DefaultTableModel) MainFrameTable.getModel();
+          while(RS.next()){
+            tbl.addRow(new Object[]{});
+            MainFrameTable.setValueAt(RS.getString("id"), row, 0);
+            MainFrameTable.setValueAt(RS.getString("p_name"), row, 1);
+            MainFrameTable.setValueAt(RS.getString("p_quantity"), row, 2);
+            MainFrameTable.setValueAt(RS.getString("p_price"), row, 3);
+            row++;
+           
+        }
+           lblrecords.setText(row+"");
+         
+    }   catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+   
+            
+    
+}
+
 }
