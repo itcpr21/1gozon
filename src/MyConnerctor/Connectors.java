@@ -13,4 +13,8 @@ public class Connectors {
 
     public static String conUrl = "jdbc:mysql://localhost/bsit21db?"
         + "user=root&password=";    
+    
+    public String getCon(){
+     return conUrl;
+ }
 }
