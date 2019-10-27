@@ -31,6 +31,11 @@ public class MainFrame extends javax.swing.JFrame {
         load();
         
     }
+   public MainFrame(String stxtusername) {
+        initComponents();
+        lbladmin.setText("Welcome " + stxtusername);
+        load();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -75,6 +80,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         lblrecords = new javax.swing.JLabel();
         btnDelete1 = new javax.swing.JButton();
+        txtsearch = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        lbladmin = new javax.swing.JLabel();
+        btnAdd1 = new javax.swing.JButton();
 
         AddProductDialog.setMinimumSize(new java.awt.Dimension(350, 370));
 
@@ -379,27 +388,66 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        txtsearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtsearchKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtsearchKeyTyped(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        jLabel11.setText("SEARCH");
+
+        lbladmin.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lbladmin.setForeground(new java.awt.Color(0, 51, 255));
+        lbladmin.setText("Welcome User");
+
+        btnAdd1.setBackground(new java.awt.Color(0, 0, 0));
+        btnAdd1.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        btnAdd1.setForeground(new java.awt.Color(0, 153, 255));
+        btnAdd1.setText("Logout");
+        btnAdd1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdd1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(101, 101, 101)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDelete1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDelete)))
+                        .addComponent(btnAdd1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbladmin, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(lbladmin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -407,7 +455,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDelete)
                     .addComponent(btnAdd)
-                    .addComponent(btnDelete1))
+                    .addComponent(btnDelete1)
+                    .addComponent(btnAdd1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -548,6 +597,20 @@ public class MainFrame extends javax.swing.JFrame {
          }
     }//GEN-LAST:event_btnaddpqActionPerformed
 
+    private void txtsearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtsearchKeyTyped
+       search();
+    }//GEN-LAST:event_txtsearchKeyTyped
+
+    private void txtsearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtsearchKeyReleased
+        search();
+    }//GEN-LAST:event_txtsearchKeyReleased
+
+    private void btnAdd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd1ActionPerformed
+       this.setVisible(false);
+       Login login = new Login();
+       login.setVisible(true);
+    }//GEN-LAST:event_btnAdd1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -587,12 +650,39 @@ public class MainFrame extends javax.swing.JFrame {
     txtpquantity.setValue(0);
     txtpname.requestFocus();
 }
+    private void search(){
+        String skey = txtsearch.getText();
+    int row = 0;
+    try{
+          Class.forName("com.mysql.jdbc.Driver");
+          java.sql.Connection con = DriverManager.getConnection(connection.getCon());
+        String sql ="Select * from tblproduct where id like ? or p_name like ? ";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, "%"+skey+"%");
+        pstmt.setString(2, "%"+skey+"%");
+        ResultSet rs = pstmt.executeQuery();
+        DefaultTableModel tbl = (DefaultTableModel) MainFrameTable.getModel();
+        tbl.setRowCount(0);
+         while(rs.next()){
+            tbl.addRow(new Object[]{});
+            MainFrameTable.setValueAt(rs.getString("id"), row, 0);
+            MainFrameTable.setValueAt(rs.getString("p_name"), row, 1);
+            MainFrameTable.setValueAt(rs.getString("p_quantity"), row, 2);
+            MainFrameTable.setValueAt(rs.getString("p_price"), row, 3);
+            row++;
+         }
+    } catch (ClassNotFoundException | SQLException ex) {
+         Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+     }
+    
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AddProductDialog;
     private javax.swing.JTable MainFrameTable;
     private javax.swing.JDialog UpdateProductDialog;
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAdd1;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDelete1;
     private javax.swing.JButton btnaddpq;
@@ -602,6 +692,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -614,12 +705,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbladdupq;
+    private javax.swing.JLabel lbladmin;
     private javax.swing.JLabel lblrecords;
     private javax.swing.JLabel lbluid;
     private javax.swing.JSpinner spnraddupq;
     private javax.swing.JTextField txtpname;
     private javax.swing.JFormattedTextField txtpprice;
     private javax.swing.JSpinner txtpquantity;
+    private javax.swing.JTextField txtsearch;
     private javax.swing.JTextField txtupn;
     private javax.swing.JFormattedTextField txtupp;
     private javax.swing.JSpinner txtupq;
